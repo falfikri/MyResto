@@ -1,5 +1,5 @@
 import 'dart:async';
-// import 'package:app_resto/ui/informasi_screen.dart';
+import 'package:myresto/ui/onboard_screen.dart';
 import 'package:flutter/material.dart';
 
 
@@ -23,18 +23,12 @@ class SplashScreenState extends State<SplashScreen> {
 
   void navigationPage() {
     Navigator.pop(context);
-    // Navigator.of(context).push(MaterialPageRoute(builder: (context) => InformationScreen()));
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => OnboardScreen()));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "MyResto",
-          style: TextStyle(color: Colors.white),
-        ),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
