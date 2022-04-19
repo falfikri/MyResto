@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:myresto/ui/register_screen.dart';
 import 'package:onboarding/onboarding.dart';
 
 class OnboardScreen extends StatefulWidget{
@@ -230,7 +231,9 @@ class OnboardStateScreen extends State<OnboardScreen>{
       color: defaultProceedButtonColor,
       child: InkWell(
         borderRadius: defaultProceedButtonBorderRadius,
-        onTap: () {},
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()),);
+        },
         child: const Padding(
           padding: defaultProceedButtonPadding,
           child: Text(
