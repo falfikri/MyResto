@@ -238,7 +238,12 @@ class OnboardStateScreen extends State<OnboardScreen>{
           padding: defaultProceedButtonPadding,
           child: Text(
             'Sign up',
-            style: defaultProceedButtonTextStyle,
+            // style: defaultProceedButtonTextStyle,
+            style: TextStyle(
+              color: Color.fromRGBO(255, 255, 255, 1),
+              fontSize: 18,
+              letterSpacing: 1.0,
+            ),
           ),
         ),
       ),
