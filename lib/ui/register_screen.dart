@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_login/flutter_login.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:http/http.dart' as http;
 import '../model/register_response.dart';
+import 'package:myresto/ui/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget{
   const RegisterScreen({Key? key}) : super(key: key);
@@ -27,9 +29,9 @@ class registerstate extends State<RegisterScreen>{
       var url = Uri.parse('http://172.20.10.3/api-resto/public/api/register');
       final response = await client.post(url, body: {"name": nama, "no_hp": nohp, "email": email, "password": pass, "confirmed": conpass});
       if (response.statusCode == 200) {
-        RegisterResponse loginResponse = RegisterResponse.fromJson(json.decode(response.body.toString()));
-        if(loginResponse.status==true){
-          pesan = loginResponse.pesan.toString();
+        RegisterResponse registResponse = RegisterResponse.fromJson(json.decode(response.body.toString()));
+        if(registResponse.status==true){
+          pesan = registResponse.pesan.toString();
           nextScreen = true;
         }else{
           pesan = "Pendaftaran Akun Gagal";
@@ -40,10 +42,12 @@ class registerstate extends State<RegisterScreen>{
       }catch(e){
       pesan = e.toString();
     }
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(pesan!)));
+    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(pesan!)));
     if(nextScreen==true){
-      Navigator.of(context).pop();
-      // Navigator.push(context, MaterialPageRoute(builder: (context) => const ViewDataKaryawanScreen()),);
+      // Navigator.of(context).pop();
+      _showInformationDialog();
+    }else{
+      _showInformationDialog2();
     }
   }
 
@@ -280,9 +284,9 @@ class registerstate extends State<RegisterScreen>{
                   ),
                 ),
                 onTap: () async{
-                  // Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()),);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()),);
                 }
-              )
+              ),
             ),
 
             Container(
@@ -306,5 +310,52 @@ class registerstate extends State<RegisterScreen>{
         ),
       ),
     );
+  }
+  _showInformationDialog() async{
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.SUCCES,
+      borderSide: const BorderSide(
+        color: Colors.green,
+        width: 3,
+      ),
+      width: 400,
+      buttonsBorderRadius: const BorderRadius.all(
+        Radius.circular(2),
+      ),
+      dismissOnTouchOutside: false,
+      dismissOnBackKeyPress: false,
+      headerAnimationLoop: false,
+      animType: AnimType.BOTTOMSLIDE,
+      title: 'INFO',
+      desc: 'Berhasil Mendaftarkan Akun!\nSilahkan Masuk ke Akun Anda',
+      showCloseIcon: false,
+      btnOkOnPress: () async{
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()),);
+      },
+    ).show();
+  }
+
+  _showInformationDialog2() async{
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.ERROR,
+      borderSide: const BorderSide(
+        color: Colors.red,
+        width: 3,
+      ),
+      width: 400,
+      buttonsBorderRadius: const BorderRadius.all(
+        Radius.circular(2),
+      ),
+      dismissOnTouchOutside: false,
+      dismissOnBackKeyPress: false,
+      headerAnimationLoop: false,
+      animType: AnimType.BOTTOMSLIDE,
+      title: 'INFO',
+      desc: 'Gagal Mendaftarkan Akun!\nPeriksa Kembali Pendaftaran Anda',
+      showCloseIcon: false,
+      btnOkOnPress: (){}
+    ).show();
   }
 }
