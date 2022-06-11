@@ -1,14 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
-// import 'dart:html';
 import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
+// import 'package:flutter_login/flutter_login.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:http/http.dart' as http;
-// import 'package:flutter/cupertino.dart';
 import '../model/register_response.dart';
-import 'package:flutter/services.dart';
 
 class RegisterScreen extends StatefulWidget{
   const RegisterScreen({Key? key}) : super(key: key);
@@ -28,8 +24,8 @@ class registerstate extends State<RegisterScreen>{
     bool? nextScreen = false;
     var client = http.Client();
     try {
-      var url = Uri.parse('http://192.168.43.182:80/api/rest_api.php?action=loginAdmin');
-      final response = await client.post(url, body: {"nama": nama, "no_hp": nohp, "email": email, "password": pass, "config_pass": conpass});
+      var url = Uri.parse('http://172.20.10.3/api-resto/public/api/register');
+      final response = await client.post(url, body: {"name": nama, "no_hp": nohp, "email": email, "password": pass, "confirmed": conpass});
       if (response.statusCode == 200) {
         RegisterResponse loginResponse = RegisterResponse.fromJson(json.decode(response.body.toString()));
         if(loginResponse.status==true){
@@ -50,12 +46,14 @@ class registerstate extends State<RegisterScreen>{
       // Navigator.push(context, MaterialPageRoute(builder: (context) => const ViewDataKaryawanScreen()),);
     }
   }
+
   @override
   Widget build (BuildContext context){
     return Scaffold(
       body: Container(
         padding: EdgeInsets.fromLTRB(10,40,10,10),
-        child: Column(
+        child: ListView(
+          shrinkWrap: true,
           children: [
             Container(
               height: 10,
@@ -66,6 +64,9 @@ class registerstate extends State<RegisterScreen>{
                 height: 300,
               ),
             ),
+
+            /* Container nama */
+
             Container(
               margin: EdgeInsets.fromLTRB(15,15,15,5),
               child: TextFormField(
@@ -74,11 +75,7 @@ class registerstate extends State<RegisterScreen>{
                   fontSize: 16,
                   color: Colors.black,
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    String? nama = controllerTxtNama!.text.toString();
-                  });
-                },
+
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.person_outline_rounded,
@@ -105,6 +102,9 @@ class registerstate extends State<RegisterScreen>{
                 ),
               ),
             ),
+
+            /*Container E-mail*/
+
             Container(
               margin: EdgeInsets.fromLTRB(15,5,15,5),
               child: TextFormField(
@@ -113,11 +113,7 @@ class registerstate extends State<RegisterScreen>{
                   fontSize: 16,
                   color: Colors.black,
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    String? email = controllerTxtEmail!.text.toString();
-                  });
-                },
+
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.email_outlined,
@@ -144,6 +140,9 @@ class registerstate extends State<RegisterScreen>{
                 ),
               ),
             ),
+
+            /* Container No.hp */
+
             Container(
               margin: EdgeInsets.fromLTRB(15,5,15,5),
               child: TextFormField(
@@ -153,11 +152,7 @@ class registerstate extends State<RegisterScreen>{
                   fontSize: 16,
                   color: Colors.black,
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    String? nohp = controllerTxtNohp!.text.toString();
-                  });
-                },
+
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.phone_sharp,
@@ -184,6 +179,9 @@ class registerstate extends State<RegisterScreen>{
                 ),
               ),
             ),
+
+            /* Container password */
+            
             Container(
               margin: EdgeInsets.fromLTRB(15,5,15,5),
               child: TextFormField(
@@ -194,11 +192,7 @@ class registerstate extends State<RegisterScreen>{
                   fontSize: 16,
                   color: Colors.black,
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    String? pass = controllerTxtPass!.text.toString();
-                  });
-                },
+
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.password,
@@ -225,9 +219,13 @@ class registerstate extends State<RegisterScreen>{
                 ),
               ),
             ),
+
+            /*container konfirmasi password */
+
             Container(
               margin: EdgeInsets.fromLTRB(15,5,15,5),
               child: TextFormField(
+                // cursorColor: Colors.black,
                 // keyboardType: TextInputType.visiblePassword,
                 obscureText: true,
                 controller: controllerTxtConpass,
@@ -235,11 +233,11 @@ class registerstate extends State<RegisterScreen>{
                   fontSize: 16,
                   color: Colors.black,
                 ),
-                onChanged: (value) {
-                  setState(() {
-                    String? conpass = controllerTxtConpass!.text.toString();
-                  });
-                },
+                // onChanged: (value) {
+                //   setState(() {
+                //     String? conpass = controllerTxtConpass!.text.toString();
+                //   });
+                // },
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.password,
@@ -250,6 +248,7 @@ class registerstate extends State<RegisterScreen>{
                       const BorderSide(color: Colors.orange, width: 0.5),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
+
                   fillColor: Colors.grey,
                   hintText: "Masukkan Kembali Password Anda",
                   hintStyle: TextStyle(
@@ -257,6 +256,7 @@ class registerstate extends State<RegisterScreen>{
                     fontSize: 16,
                     fontFamily: "verdana_regular",
                   ),
+
                   labelText: 'Konfirmasi Password',
                   labelStyle: TextStyle(
                     color: Colors.grey,
@@ -266,8 +266,12 @@ class registerstate extends State<RegisterScreen>{
                 ),
               ),
             ),
+
             Container(
-              margin: EdgeInsets.all(15),
+              margin: EdgeInsets.all(8),
+            ),
+
+            Center(
               child: InkWell(
                 child: Text(
                   "Sudah punya akun?",
@@ -280,8 +284,20 @@ class registerstate extends State<RegisterScreen>{
                 }
               )
             ),
+
+            Container(
+              margin: EdgeInsets.all(6),
+            ),
+
             GFButton(
-              onPressed: (){},
+              onPressed: () async{
+                String? nama = controllerTxtNama!.text.toString();
+                String? email= controllerTxtEmail!.text.toString();
+                String? nohp = controllerTxtNohp!.text.toString();
+                String? pass = controllerTxtPass!.text.toString();
+                String? conpass = controllerTxtConpass!.text.toString();
+                register(nama, nohp, email, pass, conpass);
+              },
               text: "Daftar",
               shape: GFButtonShape.pills,
               fullWidthButton: true,
@@ -292,4 +308,3 @@ class registerstate extends State<RegisterScreen>{
     );
   }
 }
-      // Navigator.push(context, MaterialPageRoute(builder: (context) => const DashboardScreen()),);
