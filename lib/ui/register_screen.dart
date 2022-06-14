@@ -44,7 +44,6 @@ class registerstate extends State<RegisterScreen>{
     }
     // ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(pesan!)));
     if(nextScreen==true){
-      // Navigator.of(context).pop();
       _showInformationDialog();
     }else{
       _showInformationDialog2();
@@ -271,6 +270,8 @@ class registerstate extends State<RegisterScreen>{
               ),
             ),
 
+            /* Masuk Ke Akun */
+
             Container(
               margin: EdgeInsets.all(8),
             ),
@@ -311,6 +312,9 @@ class registerstate extends State<RegisterScreen>{
       ),
     );
   }
+
+  /* Register response */
+
   _showInformationDialog() async{
     AwesomeDialog(
       context: context,

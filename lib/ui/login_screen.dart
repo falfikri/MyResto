@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-// import 'package:flutter_login/flutter_login.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:http/http.dart' as http;
@@ -39,16 +39,181 @@ class loginstate extends State<LoginScreen>{
       pesan = e.toString();
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(pesan!)));
     if(nextScreen==true){
-      Navigator.of(context).pop();
-      // Navigator.push(context, MaterialPageRoute(builder: (context) => const ViewDataKaryawanScreen()),);
+      login_berhasil();
+    }else{
+      login_gagal();
     }
   }
   @override
   Widget build (BuildContext context){
     return Scaffold(
+
+      /* appbar */
       
+      appBar: AppBar(
+        title: Image.asset("assets/images/myrestoo3.png"),
+      ),
+      
+      body: Container(
+        padding: EdgeInsets.fromLTRB(10,40,10,10),
+        child: ListView(
+          shrinkWrap: true,
+          children: [
+            Container(
+              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+              child: Text("Masukkan E-mail dan Password \n yang sudah anda daftarkan"),
+            ),
+
+            /* Container textediting E-mail */
+
+            Container(
+              margin: EdgeInsets.fromLTRB(15,15,15,5),
+              child: TextFormField(
+                controller: controllerTxtEmail,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.email,
+                    color: Colors.grey,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                      const BorderSide(color: Colors.orange, width: 0.5),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  fillColor: Colors.grey,
+                  hintText: "Masukkan E-mail Anda",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                    fontFamily: "verdana_regular",
+                  ),
+                  labelText: 'E-mail',
+                  labelStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                    fontFamily: "verdana_regular",
+                  ),
+                ),
+              ),
+            ),
+
+            /* Container textediting Password */
+
+            Container(
+              margin: EdgeInsets.fromLTRB(15,15,15,5),
+              child: TextFormField(
+                controller: controllerTxtPassword,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.black,
+                ),
+
+                decoration: InputDecoration(
+                  prefixIcon: Icon(
+                    Icons.password,
+                    color: Colors.grey,
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide:
+                      const BorderSide(color: Colors.orange, width: 0.5),
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                  fillColor: Colors.grey,
+                  hintText: "Masukkan Password Anda",
+                  hintStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                    fontFamily: "verdana_regular",
+                  ),
+                  labelText: 'Password',
+                  labelStyle: TextStyle(
+                    color: Colors.grey,
+                    fontSize: 16,
+                    fontFamily: "verdana_regular",
+                  ),
+                ),
+              ),
+            ),
+
+            /* Lupa Password */
+
+            Container(
+              padding: EdgeInsets.all(10.0),
+            ),
+            Center(
+              child: InkWell(
+                child: Text("Lupa Password?",
+                  style: TextStyle(
+                    color: Colors.blue,
+                  ),
+                ),
+                onTap: ()async{
+                  // Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()),);
+                }
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.all(10.0)
+            ),
+          ],
+        ),
+      ),
     );
+  }
+
+  /* login response */
+
+  login_berhasil() async{
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.SUCCES,
+      borderSide: const BorderSide(
+        color: Colors.green,
+        width: 3,
+      ),
+      width: 400,
+      buttonsBorderRadius: const BorderRadius.all(
+        Radius.circular(2),
+      ),
+      dismissOnTouchOutside: false,
+      dismissOnBackKeyPress: false,
+      headerAnimationLoop: false,
+      animType: AnimType.BOTTOMSLIDE,
+      title: 'INFO',
+      desc: 'Berhasil Masuk Ke Akun!\n',
+      showCloseIcon: false,
+      btnOkOnPress: () async{
+        // Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginScreen()),);
+      },
+    ).show();
+  }
+
+  login_gagal() async{
+    AwesomeDialog(
+      context: context,
+      dialogType: DialogType.ERROR,
+      borderSide: const BorderSide(
+        color: Colors.red,
+        width: 3,
+      ),
+      width: 400,
+      buttonsBorderRadius: const BorderRadius.all(
+        Radius.circular(2),
+      ),
+      dismissOnTouchOutside: false,
+      dismissOnBackKeyPress: false,
+      headerAnimationLoop: false,
+      animType: AnimType.BOTTOMSLIDE,
+      title: 'INFO',
+      desc: 'Gagal Masuk ke Akun!\nPeriksa Kembali Data Masuk Anda',
+      showCloseIcon: false,
+      btnOkOnPress: (){}
+    ).show();
   }
 }
