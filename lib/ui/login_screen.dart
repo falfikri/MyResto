@@ -53,6 +53,7 @@ class loginstate extends State<LoginScreen>{
       
       appBar: AppBar(
         title: Image.asset("assets/images/myrestoo3.png"),
+        backgroundColor: Colors.amber.shade300,
       ),
       
       body: Container(
@@ -61,8 +62,13 @@ class loginstate extends State<LoginScreen>{
           shrinkWrap: true,
           children: [
             Container(
-              padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-              child: Text("Masukkan E-mail dan Password \n yang sudah anda daftarkan"),
+              padding: EdgeInsets.fromLTRB(25, 30, 10, 30),
+              child: Text(
+                "Masukkan E-mail dan Password\nyang sudah anda daftarkan",
+                style: TextStyle(
+                  fontSize: 16,
+                ),
+              ),
             ),
 
             /* Container textediting E-mail */
@@ -70,6 +76,7 @@ class loginstate extends State<LoginScreen>{
             Container(
               margin: EdgeInsets.fromLTRB(15,15,15,5),
               child: TextFormField(
+                cursorColor: Colors.green,
                 controller: controllerTxtEmail,
                 style: TextStyle(
                   fontSize: 16,
@@ -79,11 +86,11 @@ class loginstate extends State<LoginScreen>{
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.email,
-                    color: Colors.grey,
+                    color: Colors.black,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                      const BorderSide(color: Colors.orange, width: 0.5),
+                      const BorderSide(color: Colors.green, width: 0.5),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   fillColor: Colors.grey,
@@ -109,6 +116,8 @@ class loginstate extends State<LoginScreen>{
               margin: EdgeInsets.fromLTRB(15,15,15,5),
               child: TextFormField(
                 controller: controllerTxtPassword,
+                obscureText: true,
+                cursorColor: Colors.green,
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.black,
@@ -117,11 +126,11 @@ class loginstate extends State<LoginScreen>{
                 decoration: InputDecoration(
                   prefixIcon: Icon(
                     Icons.password,
-                    color: Colors.grey,
+                    color: Colors.black,
                   ),
                   focusedBorder: OutlineInputBorder(
                     borderSide:
-                      const BorderSide(color: Colors.orange, width: 0.5),
+                      const BorderSide(color: Colors.green, width: 0.5),
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   fillColor: Colors.grey,
@@ -146,7 +155,8 @@ class loginstate extends State<LoginScreen>{
             Container(
               padding: EdgeInsets.all(10.0),
             ),
-            Center(
+            Container(
+              padding: EdgeInsets.fromLTRB(20, 0, 10, 0),
               child: InkWell(
                 child: Text("Lupa Password?",
                   style: TextStyle(
@@ -160,6 +170,20 @@ class loginstate extends State<LoginScreen>{
             ),
             Container(
               padding: EdgeInsets.all(10.0)
+            ),
+            
+            /* Login Button */
+
+            GFButton(
+              onPressed: () async{
+                String? email= controllerTxtEmail!.text.toString();
+                String? pass = controllerTxtPassword!.text.toString();
+                masuk(email, pass);
+              },
+              text: "Masuk",
+              shape: GFButtonShape.pills,
+              fullWidthButton: true,
+              color: Colors.green.shade400,
             ),
           ],
         ),
