@@ -22,7 +22,7 @@ class loginstate extends State<LoginScreen>{
     var client = http.Client();
 
     try {
-      var url = Uri.parse('http://172.20.10.3/api-resto/public/api/login');
+      var url = Uri.parse('http://192.168.1.11/api-resto/public/api/login');
       final response = await client.post(url, body: {"email": email, "password": password});
       if (response.statusCode == 200) {
         LoginResponse loginResponse = LoginResponse.fromJson(json.decode(response.body.toString()));
@@ -66,7 +66,7 @@ class loginstate extends State<LoginScreen>{
               child: Text(
                 "Masukkan E-mail dan Password\nyang sudah anda daftarkan",
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                 ),
               ),
             ),

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-// import 'package:flutter_login/flutter_login.dart';
 import 'package:getwidget/components/button/gf_button.dart';
 import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +13,24 @@ class RegisterScreen extends StatefulWidget{
 }
 
 class registerstate extends State<RegisterScreen>{
+
+  var _formKey = GlobalKey<FormState>();
+  var isLoading = false;
+  
+  void _submit() {
+    final isValid = _formKey.currentState!.validate();
+    if (isValid) {
+      return;
+      // String? nama = controllerTxtNama!.text.toString();
+      // String? email= controllerTxtEmail!.text.toString();
+      // String? nohp = controllerTxtNohp!.text.toString();
+      // String? pass = controllerTxtPass!.text.toString();
+      // String? conpass = controllerTxtConpass!.text.toString();
+      // register(nama, nohp, email, pass, conpass);
+    }
+    _formKey.currentState!.save();
+  }
+
   final TextEditingController? controllerTxtNama = TextEditingController();
   final TextEditingController? controllerTxtNohp = TextEditingController();
   final TextEditingController? controllerTxtEmail = TextEditingController();
@@ -26,7 +43,7 @@ class registerstate extends State<RegisterScreen>{
     bool? nextScreen = false;
     var client = http.Client();
     try {
-      var url = Uri.parse('http://172.20.10.3/api-resto/public/api/register');
+      var url = Uri.parse('http://192.168.1.11/api-resto/public/api/register');
       final response = await client.post(url, body: {"name": nama, "no_hp": nohp, "email": email, "password": pass, "confirmed": conpass});
       if (response.statusCode == 200) {
         RegisterResponse registResponse = RegisterResponse.fromJson(json.decode(response.body.toString()));
@@ -48,7 +65,7 @@ class registerstate extends State<RegisterScreen>{
     }else{
       _showInformationDialog2();
     }
-  }
+  } 
 
   @override
   Widget build (BuildContext context){
@@ -111,6 +128,7 @@ class registerstate extends State<RegisterScreen>{
             Container(
               margin: EdgeInsets.fromLTRB(15,5,15,5),
               child: TextFormField(
+                key: _formKey,
                 controller: controllerTxtEmail,
                 style: TextStyle(
                   fontSize: 16,
@@ -141,6 +159,19 @@ class registerstate extends State<RegisterScreen>{
                     fontFamily: "verdana_regular",
                   ),
                 ),
+
+                // email validation
+                onFieldSubmitted: (value) {
+                  //validator
+                },
+                validator: (value) {
+                  if (value!.isEmpty ||
+                      !RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          .hasMatch(value)) {
+                    return 'Masukkan E-mail yang Valid!';
+                  }
+                  return null;
+                },
               ),
             ),
 
@@ -296,12 +327,13 @@ class registerstate extends State<RegisterScreen>{
 
             GFButton(
               onPressed: () async{
-                String? nama = controllerTxtNama!.text.toString();
-                String? email= controllerTxtEmail!.text.toString();
-                String? nohp = controllerTxtNohp!.text.toString();
-                String? pass = controllerTxtPass!.text.toString();
-                String? conpass = controllerTxtConpass!.text.toString();
-                register(nama, nohp, email, pass, conpass);
+                _submit();
+                // String? nama = controllerTxtNama!.text.toString();
+                // String? email= controllerTxtEmail!.text.toString();
+                // String? nohp = controllerTxtNohp!.text.toString();
+                // String? pass = controllerTxtPass!.text.toString();
+                // String? conpass = controllerTxtConpass!.text.toString();
+                // register(nama, nohp, email, pass, conpass);
               },
               text: "Daftar",
               shape: GFButtonShape.pills,
