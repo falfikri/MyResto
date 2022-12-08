@@ -1,6 +1,6 @@
 # myresto
 
-A new Flutter project.
+Project FLUTTER untuk resto
 
 ## Getting Started
 
